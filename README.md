@@ -1,1 +1,27 @@
 # Correcion-Parcial
+Elaborado por Ivan Beltran,Esteban Ramirez y Erick Martinez
+Respuestas y justificaciones 
+
+Pregunta 1 — Respuesta B La sustitución de comandos, por ejemplo fecha=$(date +%F_%H%M), guarda la salida de date en una variable. Esa variable se usa luego en el nombre del archivo comprimido, así cada copia queda con un nombre distinto.
+Pregunta 2 — Respuesta B El operador >> agrega la nueva línea al final del archivo y conserva lo escrito antes. El operador > borraría el contenido anterior de la bitácora. Pregunta 3 — Respuesta A La condicional if [ "$uso" -gt 85 ] compara enteros: -gt significa "mayor que". El operador = compara cadenas de texto, no valores numéricos. 
+Pregunta 4 — Respuesta C En el campo de minutos, */30 indica un paso de 30 minutos (minuto 0 y minuto 30 de cada hora). Los demás asteriscos cubren todas las horas, días y meses.
+Pregunta 5 — Respuesta D La construcción while IFS=',' read -r usuario nombre grupo; do ... done < archivo.csv lee una línea a la vez y separa los campos por comas. Un for sobre cat dividiría el texto por espacios y saltos de línea.
+Pregunta 6 — Respuesta D Ambas informaciones son necesarias. useradd solo funciona con privilegios de superusuario, y falla si el nombre de usuario ya existe. Con una sola de las dos condiciones no se garantiza crear todas las cuentas.
+Pregunta 7 — Respuesta A La afirmación 1 es verdadera: -mtime +7 selecciona archivos modificados hace más de siete días. La afirmación 2 es falsa: -mtime evalúa la modificación del contenido; el último acceso se evalúa con-atime.
+Pregunta 8 — Respuesta C Si la variable está vacía, rm -rf "$RUTA/"* se convierte en rm -rf /* y borra desde la raíz. Por eso se valida antes con [ -n "$RUTA" ] o ${RUTA:?}. La razón es verdadera y explica la afirmación. 
+Pregunta 9 — Respuesta B systemctl is-active --quiet servicio retorna 0 si el servicio está en ejecución y no imprime nada, por lo que sirve directamente en un if. is-enabled solo indica si arranca automáticamente con el sistema. Página 3 Sistemas Operativos — Cuestionario de scripting en Bash 
+Pregunta 10 — Respuesta D El orden lógico es: consultar el estado (I), reiniciar si está detenido (II), comprobar que el reinicio funcionó (IV) y registrar el resultado final (III). La bitácora va al final porque debe reflejar el resultado verificado.
+Pregunta 11 — Respuesta A grep -i error /var/log/syslog | wc -l filtra las líneas sin distinguir mayúsculas de minúsculas y wc -l cuenta las líneas. wc -w contaría palabras y -v invertiría la búsqueda.
+Pregunta 12 — Respuesta B awk '{print $5}' imprime solo el quinto campo de cada línea. $0 es la línea completa, NR el número de registro y NF la cantidad de campos. 
+Pregunta 13 — Respuesta C sudo otorga privilegios de superusuario y apt-get install -y responde "sí" automáticamente a las confirmaciones. La opción -q solo reduce los mensajes en pantalla. 
+Pregunta 14 — Respuesta A apt-get install -y paquete && echo "OK" >> log || echo "FALLO" >> log. El operador && ejecuta lo siguiente si el comando terminó con éxito (código 0) y || lo ejecuta si falló. 
+Pregunta 15 — Respuesta B for h in "${hosts[@]}" entrega cada elemento del arreglo por separado. ${#hosts[@]} devuelve la cantidad de elementos y "${hosts[*]}" une todos en una sola cadena.
+Pregunta 16 — Respuesta D Con el host apagado, ping no recibe respuesta y retorna un código distinto de 0. Por eso se ejecuta la rama else y el host queda registrado como "inaccesible".
+Pregunta 17 — Respuesta C En una estructura case, el carácter | separa patrones alternativos dentro de la misma rama: *.jpg|*.png|*.gif) mv "$f" imagenes/ ;;. Las comas, el punto y coma y el & no cumplen esa función. 
+Pregunta 18 — Respuesta A trap limpieza EXIT ejecuta la función al terminar el script por cualquier causa: fin normal, error o interrupción con Ctrl+C. Las señales SIGKILL y SIGSTOP no se pueden capturar con trap. 
+Pregunta 19 — Respuesta B ls -t ordena del archivo más reciente al más antiguo. Luego tail -n +$((N+1)) salta los N primeros (los más recientes) y los restantes se borran. ls -S ordenaría por tamaño, no por fecha. Página 4 Sistemas Operativos — Cuestionario de scripting en Bash 
+Pregunta 20 — Respuesta C awk -F: '$3 == 0 {print $1}' /etc/passwd usa los dos puntos como separador y evalúa el tercer campo, que es el UID. El campo 4 es el GID y el campo 1 es el nombre de usuario. 
+Pregunta 21 — Respuesta D-t muestra sockets TCP, -u UDP, -l solo los que están en escucha y -n presenta los puertos en forma numérica. Sin -p no muestra procesos y sin -x no incluye sockets UNIX. 
+Pregunta 22 — Respuesta A awk 'BEGIN{OFS=","} {$1=$1; print}' define la coma como separador de salida. La asignación $1=$1 obliga a awk a reconstruir la línea con ese separador. FS es el separador de entrada y ORS el de fin de registro.
+Pregunta 23 — Respuesta D systemctl enable --now apache2 habilita el inicio automático en cada arranque y además inicia el servicio de inmediato. enable sin --now no lo inicia, y start no lo habilita. Pregunta 24 — Respuesta A $# contiene la cantidad de argumentos recibidos: if [ $# -ne 2 ]; then echo "Uso: $0 origen destino"; exit 1; fi. $? es el último código de salida, $$ el PID del script y $0 su nombre.
+Pregunta 25 — Respuesta C PS3 define el texto con el que select pide al usuario elegir una opción. PS1 es el prompt principal, PS2 el de continuación de línea y PS4 el de la traza con set 
